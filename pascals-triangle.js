@@ -1,23 +1,25 @@
 const FIRST_ROW = [1]
 
-const nextRow = lastRow => {
+const pairs = row => {
+     row = [0, ...row]
+     return row.map((num, i) => [row[i], row[i + 1] ?? 0])
+}
+
+const newRow = lastRow => {
      if (!lastRow) return FIRST_ROW
-     let mapResult = lastRow.map(mapFunction)
-     return [...mapResult, 1]
+     return pairs(lastRow).map(
+          ([leftValue, rightValue]) => leftValue + rightValue
+     )
 }
 
-const mapFunction = (item, index, array) => {
-     const leftValue = array[index - 1] ?? 0
-     const rightValue = item
-     return leftValue + rightValue
-}
-
-export const rows = (num = 0, row = 0, result = []) => {
+export const rows = (num = 0) => {
+     const result = []
      if (num === 0) return result
+     let row = 0
 
      while (row < num) {
           const lastRow = result[row - 1]
-          result[row] = nextRow(lastRow)
+          result[row] = newRow(lastRow)
           row++
      }
 
