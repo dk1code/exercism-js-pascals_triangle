@@ -5,9 +5,9 @@ const pairs = row => {
      return row.map((num, i) => [row[i], row[i + 1] ?? 0])
 }
 
-const newRow = lastRow => {
-     if (!lastRow) return FIRST_ROW
-     return pairs(lastRow).map(
+const nextRow = previousRow => {
+     if (!previousRow) return FIRST_ROW
+     return pairs(previousRow).map(
           ([leftValue, rightValue]) => leftValue + rightValue
      )
 }
@@ -15,12 +15,10 @@ const newRow = lastRow => {
 export const rows = (num = 0) => {
      const result = []
      if (num === 0) return result
-     let row = 0
 
-     while (row < num) {
-          const lastRow = result[row - 1]
-          result[row] = newRow(lastRow)
-          row++
+     while (result.length < num) {
+          const previousRow = result[result.length - 1]
+          result.push(nextRow(previousRow))
      }
 
      return result
